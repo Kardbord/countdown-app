@@ -12,9 +12,17 @@ export default class App extends Component {
     constructor(props) {
         super(props);
 
+        this.timer = 0;
+
         this.state = {
             active: false,
-            startDate: moment()
+            startDate: moment(),
+            timeRemaining: {
+                days: 0,
+                hours: 0,
+                minutes: 0,
+                seconds: 0
+            }
         };
     }
 
@@ -30,7 +38,7 @@ export default class App extends Component {
         let countDownDate = this.state.startDate.toDate().getTime();
 
         // Update the countdown every one second
-        let x = setInterval(function() {
+        this.timer = setInterval(function() {
             let now = new Date().getTime();
 
             let distance = countDownDate - now;
@@ -47,18 +55,27 @@ export default class App extends Component {
             const time =
                 days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
-            console.log(time);
+            const timeRemaining = {
+                days,
+                hours,
+                minutes,
+                seconds
+            };
+
+            this.setState({
+                timeRemaining
+            })
 
             if (distance < 0) {
                 clearInterval(x);
             }
-        }, 1000);
+        }.bind(this), 1000);
     }.bind(this);
 
     renderItems = function() {
         if (this.state.active) {
             return [
-                <Clock />,
+                <Clock timeRemaining={this.state.timeRemaining}/>,
                 ChangeDate("Change Date", () =>
                     this.setState({ active: false })
                 ),
@@ -70,7 +87,10 @@ export default class App extends Component {
         } else {
             return [
                 Button("Generate Countdown", this.handleGenerate),
-                <Picker callback={date => this.handleChange(date)} />
+                <Picker
+                    startDate={this.state.startDate}
+                    callback={date => this.handleChange(date)}
+                />
             ];
         }
     }.bind(this);
