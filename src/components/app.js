@@ -30,6 +30,7 @@ export default class App extends Component {
         this.setState({
             startDate: date
         });
+        clearInterval(this.timer);
     }.bind(this);
 
     handleGenerate = function() {
