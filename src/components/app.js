@@ -16,7 +16,7 @@ export default class App extends Component {
 
         this.state = {
             active: false,
-            startDate: moment(),
+            startDate: moment(new Date()).add(1,'days'),
             timeRemaining: {
                 days: 0,
                 hours: 0,
