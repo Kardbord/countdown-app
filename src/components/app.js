@@ -16,7 +16,7 @@ export default class App extends Component {
 
         this.state = {
             active: false,
-            startDate: moment(new Date()).add(1,'days'),
+            startDate: moment(new Date()).add(1, "days"),
             timeRemaining: {
                 days: 0,
                 hours: 0,
@@ -39,48 +39,61 @@ export default class App extends Component {
         let countDownDate = this.state.startDate.toDate().getTime();
 
         // Update the countdown every one second
-        this.timer = setInterval(function() {
-            let now = new Date().getTime();
+        this.timer = setInterval(
+            function() {
+                let now = new Date().getTime();
 
-            let distance = countDownDate - now;
+                let distance = countDownDate - now;
 
-            let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            let hours = Math.floor(
-                (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-            );
-            let minutes = Math.floor(
-                (distance % (1000 * 60 * 60)) / (1000 * 60)
-            );
-            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                let hours = Math.floor(
+                    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+                );
+                let minutes = Math.floor(
+                    (distance % (1000 * 60 * 60)) / (1000 * 60)
+                );
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            const time =
-                days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                const time =
+                    days +
+                    "d " +
+                    hours +
+                    "h " +
+                    minutes +
+                    "m " +
+                    seconds +
+                    "s ";
 
-            const timeRemaining = {
-                days,
-                hours,
-                minutes,
-                seconds
-            };
+                const timeRemaining = {
+                    days,
+                    hours,
+                    minutes,
+                    seconds
+                };
 
-            this.setState({
-                timeRemaining
-            })
+                this.setState({
+                    timeRemaining
+                });
 
-            if (distance < 0) {
-                clearInterval(x);
-            }
-        }.bind(this), 1000);
+                if (distance < 0) {
+                    clearInterval(x);
+                }
+            }.bind(this),
+            1000
+        );
     }.bind(this);
 
     renderItems = function() {
         if (this.state.active) {
+            let day = this.state.startDate.toDate().getDate();
+            let month = this.state.startDate.toDate().getMonth() + 1;
+            let year = this.state.startDate.toDate().getFullYear() % 100;
             return [
-                <Clock timeRemaining={this.state.timeRemaining}/>,
+                <Clock timeRemaining={this.state.timeRemaining} />,
                 ChangeDate("Change Date", () =>
                     this.setState({ active: false })
                 ),
-                LargeText("04/03"),
+                LargeText(`${month}/${day}/${year}`),
                 <label className="grid__remaining">
                     Remaining until your selected date.
                 </label>
