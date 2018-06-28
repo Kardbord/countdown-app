@@ -89,12 +89,12 @@ export default class App extends Component {
             let month = this.state.startDate.toDate().getMonth() + 1;
             let year = this.state.startDate.toDate().getFullYear() % 100;
             return [
-                <Clock timeRemaining={this.state.timeRemaining} />,
+                <Clock key={0} timeRemaining={this.state.timeRemaining} />,
                 ChangeDate("Change Date", () =>
                     this.setState({ active: false })
                 ),
                 LargeText(`${month}/${day}/${year}`),
-                <label className="grid__remaining">
+                <label key={3} className="grid__remaining">
                     Remaining until your selected date.
                 </label>
             ];
@@ -102,6 +102,7 @@ export default class App extends Component {
             return [
                 Button("Generate Countdown", this.handleGenerate),
                 <Picker
+                    key={1}
                     startDate={this.state.startDate}
                     callback={date => this.handleChange(date)}
                 />
